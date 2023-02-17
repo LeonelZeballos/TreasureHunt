@@ -1,0 +1,133 @@
+* {
+   box-sizing: border-box;
+   padding: 0;
+   margin: 0;
+}
+
+body {
+   transition: background-color ease .3s;
+   background-color: #7cd164;
+   font-family: 'Poppins', sans-serif;
+   color: white;
+   overflow: hidden;
+   user-select: none;
+}
+
+img {
+   -webkit-user-drag: none;
+}
+
+.container {
+   display: flex;
+   justify-content: center;
+}
+
+.center {
+   width: 80vw;
+   position: relative;
+   display: flex;
+   justify-content: center;
+}
+
+.container_map {
+   position: relative;
+}
+
+header {
+   position: relative;
+   
+}
+
+#tesoro {
+   width: 30px;
+   height: 30px;
+   background-color: yellow;
+   border: 2px solid yellow;
+   opacity: 0;
+   position: absolute;
+   border-radius: 100%;
+}
+
+h1 {
+   text-align: center;
+   font-size: 3rem;
+   background-color: black;
+   margin-bottom: 20px;
+}
+
+#mapa {
+   width: 400px;
+   height: 400px;
+   display: block;
+}
+
+#cercania {
+   margin: 0;
+   text-align: center;
+   font-size: 50px;
+   font-weight: bold;
+}
+
+#clicks {
+   text-align: center;
+}
+
+#reset_game_button {
+   position: absolute;
+   top: 0;
+   height: 100%;
+   padding: 0 20px;
+   border-radius: 0;
+   border: none;
+   left: 0;
+   font-weight: bolder;
+   color: white;
+   background-color: black;
+   transition: background-color ease .3s;
+   
+}
+
+#reset_game_button:hover {
+   background-color: white;
+   color: black;
+   cursor: pointer;
+}
+
+#localizador {
+   position: absolute;
+}
+
+#win_tittle {
+   position: absolute;
+   top: 100vh;
+   width: 100vw;
+   padding: 10vh 0;
+   animation-name: winTitleAnimation;
+   animation-duration: 4s;
+}
+
+@keyframes winTitleAnimation {
+   0% {top: 100vh;}
+   50% {
+      top: 50%;
+      transform: translateY(-50%);
+   }
+   100% {top: -40vh}
+}
+
+#win_container {
+   position: absolute;
+   width: 100vw;
+   height: 100vh;
+   display: none;
+   z-index: 5;
+   align-items: center;
+}
+
+#black_screen {
+   background-color: black;
+   position: absolute;
+   width: 100vw;
+   height: 100vh;
+   opacity: .7;
+}
