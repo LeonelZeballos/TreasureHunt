@@ -11,17 +11,17 @@ const tituloGanar = document.getElementById("win_container")
 const blackScreen = document.getElementById("black_screen")
 const winContainer = document.getElementById("win_container")
 const winTittle = document.getElementById("win_tittle")
+const HTMLbetterNumberClicks = document.getElementById("better_clicks_button")
 
 let nClicks = 0
 let win = false
 let xCoord
 let yCoord
+let betterNumberClicks
+let primeraPartida = true
+let nuevoRecord = false
 
 tesoro.ondragstart = function() {return false}
-
-// let distanciaMaxima = Math.sqrt(((mapa.clientHeight) ** 2) + ((mapa.clientWidth) ** 2))
-// let cuartoDeDistancia = distanciaMaxima / 4
-// console.log(cuartoDeDistancia)
 
 /*     ----- FUNCIONES -----      */
 
@@ -45,10 +45,6 @@ const comprobarCercania = (x, y) => { // Comprobamos que tan cerca estamos del t
    let difY = y - (tesoroCoord.y)
 
    let distancia = Math.sqrt((difX ** 2) + (difY ** 2))
-
-   //console.log(`DISTANCIA: ${distancia}`)
-
-   //console.log(`tesoroX: ${tesoroCoord.x} tesoroY: ${tesoroCoord.y}`)
 
    if (distancia >= 155) {
       cercania.innerHTML = "CONGELADO"
@@ -88,15 +84,29 @@ const ocultarTituloGanar = () => {
 
 const mostrarTituloGanar = () => {
    tituloGanar.style.display = "flex"
-   winTittle.innerHTML = `¡GANASTE, ENCONTRASTE EL TESORO! <br> Clicks: ${nClicks}`
+   if (nuevoRecord && primeraPartida === false) {
+      winTittle.innerHTML = `¡GANASTE, ENCONTRASTE EL TESORO! <br> ¡NUEVO RECORD! Clicks: ${nClicks}`
+   }
+   else {
+      winTittle.innerHTML = `¡GANASTE, ENCONTRASTE EL TESORO! <br> Clicks: ${nClicks}`
+   }
    cercania.style.opacity = "0"
    clicks.style.opacity = "0"
+
+   nuevoRecord = false // Reseteamos el nuevo record
 }
 
 const ocultarVentanaGanar = () => {
    winContainer.style.display = "none"
    cercania.style.opacity = "1"
    clicks.style.opacity = "1"
+}
+
+const actualizarMejoresClicks = () => {
+   if (nClicks < betterNumberClicks) {
+      nuevoRecord = true
+      HTMLbetterNumberClicks.innerHTML = `Mejor Nro de Clicks: ${nClicks}`
+   }
 }
 
 /*     ----- EVENTOS -----      */
@@ -106,8 +116,6 @@ mapa.onclick = () => {
       comprobarCercania(xCoord, yCoord)
       sumarClicks()
    }
-   
-   //console.log("MouseX: " + xCoord + " MouseY: " + yCoord)
 }
 
 mapa.onmousemove = (event) => { // Movimiento sobre la imagen
@@ -119,15 +127,24 @@ tesoro.onclick = () => { // Evento al encontrar el tesoro
    if (win === false) {
       sumarClicks()
       //alert("TESORO ENCONTRADO")
+
+      if (primeraPartida) {
+         HTMLbetterNumberClicks.innerHTML = `Mejor Nro de Clicks: ${nClicks}`
+      }
+
       cercania.innerHTML = "¡GANASTE, ENCONTRASTE EL TESORO!"
       tesoro.style.opacity = "1"
+      actualizarMejoresClicks()
       mostrarTituloGanar()
 
       setTimeout(() => {
          ocultarVentanaGanar()
       }, 4000);
 
+      betterNumberClicks = nClicks // Salvamos el anterior valor de menor número de clicks
+
       win = true
+      primeraPartida = false
    }
 }
 
@@ -136,7 +153,7 @@ resetGameButton.onclick = () => { // Resetear todos los valores y volver a jugar
    ocultarTituloGanar()
    resetearClicks()
    generarTesoro()
-   //TODO: ELIMINAR EL TEXTO DE cercania CUANDO SE MUESTRA EL WINTITTLE
+   
    cercania.innerHTML = "¿QUE TAN CERCA ESTÁS?"
    tesoro.style.opacity = "0"
    body.style.backgroundColor = "#7cd164"
